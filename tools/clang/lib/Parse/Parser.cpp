@@ -465,7 +465,7 @@ bool Parser::isDeclarationAfterDeclarator() {
     Tok.is(tok::semi)  ||           // int X();  -> not a function def
     Tok.is(tok::kw_asm) ||          // int X() __asm__ -> not a function def
     Tok.is(tok::kw___attribute) ||  // int X() __attr__ -> not a function def
-    (getLang().CPlusPlus &&
+    (getLang().CPlusPlus &&         // '()' should be parsed by direct-declarator
      Tok.is(tok::l_paren));         // int X(0) -> not a function def [C++]
 }
 
@@ -548,6 +548,9 @@ Parser::ParseDeclarationOrFunctionDefinition(AccessSpecifier AS) {
   Declarator DeclaratorInfo(DS, Declarator::FileContext);
   ParseDeclarator(DeclaratorInfo);
   // Error parsing the declarator?
+  // abstract-declarator only appres at type-name
+  // type-name -> [pointer] [abs-declarator]
+  // if this declarator has no name, must be illegal syntax
   if (!DeclaratorInfo.hasName()) {
     // If so, skip until the semi-colon or a }.
     SkipUntil(tok::r_brace, true, true);
