@@ -344,9 +344,15 @@ void Parser::Initialize() {
 
 /// ParseTopLevelDecl - Parse one top-level declaration, return whatever the
 /// action tells us to.  This returns true if the EOF was encountered.
+/// zet: at this point Lexer begin work, so the top level iec language 
+/// structure: configuration, resource, task must be processd here
+/// TODO: where is the best location add data structure for deal with these
+/// and what?
+///
 bool Parser::ParseTopLevelDecl(DeclGroupPtrTy &Result) {
   Result = DeclGroupPtrTy();
   if (Tok.is(tok::eof)) {
+    // zet: this Actions had be assigned class Sema 
     Actions.ActOnEndOfTranslationUnit();
     return true;
   }

@@ -1815,6 +1815,7 @@ static void ProcessInputFile(Preprocessor &PP, PreprocessorFactory &PPF,
   case EmitLLVM:
   case EmitBC: 
   case EmitLLVMOnly: {
+    // zet: in our iec source, we must be here
     BackendAction Act;
     if (ProgAction == EmitAssembly) {
       Act = Backend_EmitAssembly;
@@ -1991,6 +1992,8 @@ static void ProcessInputFile(Preprocessor &PP, PreprocessorFactory &PPF,
 
   llvm::OwningPtr<ASTContext> ContextOwner;
   if (Consumer)
+    // zet: ASTContext holds long-lived AST nodes (such as types and decls) 
+    // that can be referred to throughout the semantic analysis of a file.
     ContextOwner.reset(new ASTContext(PP.getLangOptions(),
                                       PP.getSourceManager(),
                                       PP.getTargetInfo(),
@@ -2062,6 +2065,7 @@ static void ProcessInputFile(Preprocessor &PP, PreprocessorFactory &PPF,
 
   // If we have an ASTConsumer, run the parser with it.
   if (Consumer)
+    // zet: parse build AST, entry point
     ParseAST(PP, Consumer.get(), *ContextOwner.get(), Stats, 
              CompleteTranslationUnit);
 
@@ -2147,6 +2151,8 @@ static void LLVMErrorHandler(void *UserData, const std::string &Message) {
   exit(1);
 }
 
+/// zet: this is the entry point of clang
+///
 int main(int argc, char **argv) {
   llvm::sys::PrintStackTraceOnErrorSignal();
   llvm::PrettyStackTraceProgram X(argc, argv);

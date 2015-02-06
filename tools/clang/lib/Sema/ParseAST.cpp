@@ -39,6 +39,8 @@ void clang::ParseAST(Preprocessor &PP, ASTConsumer *Consumer,
   }
 
   Sema S(PP, Ctx, *Consumer, CompleteTranslationUnit);
+  // zet: Parser.Actions == Sema
+  // every Actions.* will be defined in class Sema which do semantic analysis
   Parser P(PP, S);
   PP.EnterMainSourceFile();
     
@@ -60,6 +62,7 @@ void clang::ParseAST(Preprocessor &PP, ASTConsumer *Consumer,
 
   Parser::DeclGroupPtrTy ADecl;
   
+  // zet: at this point Lexer is working
   while (!P.ParseTopLevelDecl(ADecl)) {  // Not end of file.
     // If we got a null return and something *was* parsed, ignore it.  This
     // is due to a top-level semicolon, an action override, or a parse error
