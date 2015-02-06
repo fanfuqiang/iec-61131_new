@@ -425,6 +425,7 @@ Parser::DeclPtrTy Parser::ParseDeclarationAfterDeclarator(Declarator &D,
                                           TemplateInfo.TemplateParams->data(),
                                           TemplateInfo.TemplateParams->size()),
                                     D)
+    // maintain typedef names
     : Actions.ActOnDeclarator(CurScope, D);
   
   // Parse declarator '=' initializer.
@@ -509,6 +510,7 @@ ParseInitDeclaratorListAfterFirstDeclarator(Declarator &D) {
     ConsumeToken();
     
     // Parse the next declarator.
+    // do not clear declarator::const DeclSpec &DS.
     D.clear();
     
     // Accept attributes in an init-declarator.  In the first declarator in a

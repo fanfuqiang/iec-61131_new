@@ -205,6 +205,7 @@ QualType Sema::ConvertDeclSpecToType(const DeclSpec &DS,
            "Can't handle qualifiers on typedef names yet!");
     Result = GetTypeFromParser(DS.getTypeRep());
 
+    // zet: this next if statement is for objc
     if (DeclSpec::ProtocolQualifierListTy PQ = DS.getProtocolQualifiers()) {
       if (const ObjCInterfaceType *Interface = Result->getAsObjCInterfaceType())
         // It would be nice if protocol qualifiers were only stored with the

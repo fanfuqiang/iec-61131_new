@@ -126,7 +126,8 @@ namespace {
       
       if (CompileOpts.TimePasses)
         LLVMIRGeneration.startTimer();
-
+      // the real type of Gen is CodeGeneratorImpl.
+      // it's code in ModuleBuilder.cpp line 64
       Gen->HandleTopLevelDecl(D);
 
       if (CompileOpts.TimePasses)

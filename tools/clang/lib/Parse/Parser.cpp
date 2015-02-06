@@ -548,6 +548,7 @@ Parser::ParseDeclarationOrFunctionDefinition(AccessSpecifier AS) {
   Declarator DeclaratorInfo(DS, Declarator::FileContext);
   ParseDeclarator(DeclaratorInfo);
   // Error parsing the declarator?
+  // Added by zet:
   // abstract-declarator only appres at type-name
   // type-name -> [pointer] [abs-declarator]
   // if this declarator has no name, must be illegal syntax
@@ -560,6 +561,8 @@ Parser::ParseDeclarationOrFunctionDefinition(AccessSpecifier AS) {
   }
 
   // If we have a declaration or declarator list, handle it.
+  // Added by zet:
+  // int i; -> now will parse ';' here
   if (isDeclarationAfterDeclarator()) {
     // Parse the init-declarator-list for a normal declaration.
     DeclGroupPtrTy DG =
